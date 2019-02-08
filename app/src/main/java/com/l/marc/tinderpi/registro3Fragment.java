@@ -43,7 +43,7 @@ public class registro3Fragment extends Fragment implements View.OnClickListener 
 
     private Context mainContext;
 
-
+//subida
     private FirebaseAuth mAuth;
 
 
