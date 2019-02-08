@@ -19,6 +19,12 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
             case 0:
                 PerfilFragmentTab tab1 = new PerfilFragmentTab();
                 return tab1;
+            case 1:
+                CartasFragmentTab cart1 = new CartasFragmentTab();
+                return cart1;
+            case 2:
+                ChatFragmentTab chatTab1 = new ChatFragmentTab();
+                return chatTab1;
             default:
                 return null;
         }

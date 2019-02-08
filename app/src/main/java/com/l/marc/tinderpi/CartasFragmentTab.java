@@ -7,32 +7,29 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageView;
 
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
+
  * to handle interaction events.
- * Use the {@link PerfilFragmentTab#newInstance} factory method to
+ * Use the {@link CartasFragmentTab#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class PerfilFragmentTab extends Fragment {
+public class CartasFragmentTab extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    private ImageView imagePerfil;
-    private Button btnAjustes,btnPerfil;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
 
-    private FragmentInteractionPerfil mListener;
+    private FragmentInteractionListenerCartas mListener;
 
-    public PerfilFragmentTab() {
+    public CartasFragmentTab() {
         // Required empty public constructor
     }
 
@@ -42,11 +39,11 @@ public class PerfilFragmentTab extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment PerfilFragmentTab.
+     * @return A new instance of fragment CartasFragmentTab.
      */
     // TODO: Rename and change types and number of parameters
-    public static PerfilFragmentTab newInstance(String param1, String param2) {
-        PerfilFragmentTab fragment = new PerfilFragmentTab();
+    public static CartasFragmentTab newInstance(String param1, String param2) {
+        CartasFragmentTab fragment = new CartasFragmentTab();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -67,22 +64,21 @@ public class PerfilFragmentTab extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_perfil_fragment_tab, container, false);
-
-        imagePerfil = (ImageView) v.findViewById(R.id.imagenPerfilL);
-        btnAjustes = (Button) v.findViewById(R.id.btnAjustes);
-        btnPerfil = (Button) v.findViewById(R.id.btnPerfil);
-
-        return v;
+        return inflater.inflate(R.layout.cartas_tab, container, false);
     }
 
-
+    // TODO: Rename method, update argument and hook method into UI event
+    public void onButtonPressed(Uri uri) {
+        if (mListener != null) {
+            mListener.FragmentCartasTab();
+        }
+    }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof FragmentInteractionPerfil) {
-            mListener = (FragmentInteractionPerfil) context;
+        if (context instanceof FragmentInteractionListenerCartas) {
+            mListener = (FragmentInteractionListenerCartas) context;
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
@@ -105,8 +101,8 @@ public class PerfilFragmentTab extends Fragment {
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
-    public interface FragmentInteractionPerfil {
+    public interface FragmentInteractionListenerCartas {
         // TODO: Update argument type and name
-        void FragmentPerfilTab();
+        void FragmentCartasTab();
     }
 }

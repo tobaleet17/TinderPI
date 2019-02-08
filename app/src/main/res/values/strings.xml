@@ -6,5 +6,6 @@
     <string name="perfil">PERFIL</string>
     <string name="cartas">CARTAS</string>
     <string name="chat">CHAT</string>
-
+    <string name="btnAjus">AJUSTES</string>
+    <string name="btnPerfil">PERFIL</string>
 </resources>

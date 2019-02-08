@@ -51,7 +51,7 @@ public class RecyclerChat extends RecyclerView.Adapter<RecyclerChat.ChatPickerVi
     @NonNull
     @Override
     public ChatPickerViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        View v=LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.recicler_chat,viewGroup, false);
+        View v=LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.recycler_chat,viewGroup, false);
 
         return new ChatPickerViewHolder(v);
     }

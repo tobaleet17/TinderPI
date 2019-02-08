@@ -24,7 +24,7 @@ import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity implements NavigationHost,TabHost.inicializarTabHost,PerfilFragmentTab.OnFragmentInteractionListener{
+public class MainActivity extends AppCompatActivity implements NavigationHost,TabHost.inicializarTabHost,PerfilFragmentTab.FragmentInteractionPerfil,CartasFragmentTab.FragmentInteractionListenerCartas,ChatFragmentTab.FragmentListenerChat{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,9 +68,11 @@ public class MainActivity extends AppCompatActivity implements NavigationHost,Ta
     @Override
    public void iniciliazarTab(TabLayout tl1, final ViewPager v1) {
 
-       tl1.addTab(tl1.newTab().setText("Prueba"));
-     tl1.setTabGravity(tl1.GRAVITY_FILL);
-    final PagerAdapter pageAd = new PagerAdapter(getSupportFragmentManager(),tl1.getTabCount());
+       tl1.addTab(tl1.newTab().setText("PERFIL"));
+       tl1.addTab(tl1.newTab().setText("CARTAS"));
+       tl1.addTab(tl1.newTab().setText("CHAT"));
+       tl1.setTabGravity(tl1.GRAVITY_FILL);
+       final PagerAdapter pageAd = new PagerAdapter(getSupportFragmentManager(),tl1.getTabCount());
 
         v1.setAdapter(pageAd);
         v1.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tl1));
@@ -97,7 +99,17 @@ public class MainActivity extends AppCompatActivity implements NavigationHost,Ta
 
 
     @Override
-    public void onFragmentInteraction() {
+    public void FragmentCartasTab() {
+
+    }
+
+    @Override
+    public void FragmentPerfilTab() {
+
+    }
+
+    @Override
+    public void onFragmentCharTab() {
 
     }
 }
