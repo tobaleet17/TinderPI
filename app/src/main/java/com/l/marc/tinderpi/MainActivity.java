@@ -24,7 +24,7 @@ import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity implements NavigationHost,TabHost.inicializarTabHost,perfilFragment.OnFragmentInteractionListener,PerfilFragmentTab.OnFragmentInteractionListener{
+public class MainActivity extends AppCompatActivity implements NavigationHost,TabHost.inicializarTabHost,PerfilFragmentTab.OnFragmentInteractionListener{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
