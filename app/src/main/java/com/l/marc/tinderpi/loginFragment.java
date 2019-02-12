@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,6 +37,7 @@ public class loginFragment extends Fragment implements View.OnClickListener {
     private EditText email;
     private EditText pass;
 
+
     private fragmentCardView cardView_fragment;
     public loginFragment() {
 
@@ -57,6 +59,8 @@ public class loginFragment extends Fragment implements View.OnClickListener {
         pass=v.findViewById(R.id.passentrar);
 
         entrar.setOnClickListener(this);
+
+
         return v;
     }
 

@@ -1,22 +1,21 @@
-package com.l.marc.tinderpi;
+package com.l.marc.tinderpi.Cartas;
 
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
+
+import com.l.marc.tinderpi.R;
+
+import java.util.ArrayList;
 
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
-
- * to handle interaction events.
- * Use the {@link CartasFragmentTab#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class CartasFragmentTab extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -26,7 +25,12 @@ public class CartasFragmentTab extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-
+    private RelativeLayout parent;
+    private Context context;
+    private RecyclerView rc1;
+    private RecyclerCartasCentro adapter;
+    private RecyclerView.LayoutManager rlm;
+    private ArrayList<CartasData> arrayCarta;
     private FragmentInteractionListenerCartas mListener;
 
     public CartasFragmentTab() {
@@ -64,7 +68,22 @@ public class CartasFragmentTab extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.cartas_tab, container, false);
+        View v = inflater.inflate(R.layout.cartas_tab, container, false);
+       // parent = (RelativeLayout) v.findViewById(R.id.relative_container);
+
+        rc1 = (RecyclerView) v.findViewById(R.id.recyclerCartasCentro);
+        rlm = new LinearLayoutManager(v.getContext());
+        rc1.setLayoutManager(rlm);
+
+        CartasData c1 = new CartasData("pepe","catarroja");
+        CartasData c2 = new CartasData("aitor","picassent");
+        ArrayList<CartasData> arrrayAux = new ArrayList<>();
+        arrrayAux.add(c1);
+        arrrayAux.add(c2);
+        adapter = new RecyclerCartasCentro(arrrayAux);
+        rc1.setAdapter(adapter);
+
+        return v;
     }
 
     // TODO: Rename method, update argument and hook method into UI event

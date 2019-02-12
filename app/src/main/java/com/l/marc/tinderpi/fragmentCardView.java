@@ -17,7 +17,7 @@ import android.view.ViewGroup;
  * Use the {@link fragmentCardView#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class fragmentCardView extends Fragment {
+public class fragmentCardView extends Fragment implements View.OnClickListener {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -67,13 +67,6 @@ public class fragmentCardView extends Fragment {
         return inflater.inflate(R.layout.fragment_fragment_card_view, container, false);
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
-
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -89,6 +82,13 @@ public class fragmentCardView extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    @Override
+    public void onClick(View v) {
+
+
+
     }
 
     /**

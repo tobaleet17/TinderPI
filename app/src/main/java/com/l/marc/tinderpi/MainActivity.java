@@ -1,13 +1,5 @@
 package com.l.marc.tinderpi;
 
-import android.annotation.TargetApi;
-import android.app.AlertDialog;
-import android.app.DatePickerDialog;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.net.Uri;
-import android.support.annotation.Nullable;
 //import android.support.design.widget.TabLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -15,16 +7,14 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Button;
-import android.widget.DatePicker;
-import android.widget.TableLayout;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.RelativeLayout;
+
+import com.l.marc.tinderpi.Cartas.CartasFragmentTab;
 
 public class MainActivity extends AppCompatActivity implements NavigationHost,TabHost.inicializarTabHost,PerfilFragmentTab.FragmentInteractionPerfil,CartasFragmentTab.FragmentInteractionListenerCartas,ChatFragmentTab.FragmentListenerChat{
+    public RelativeLayout parentView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,10 +91,13 @@ public class MainActivity extends AppCompatActivity implements NavigationHost,Ta
     @Override
     public void FragmentCartasTab() {
 
+
+
     }
 
     @Override
     public void FragmentPerfilTab() {
+
 
     }
 
