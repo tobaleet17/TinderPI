@@ -19,7 +19,8 @@
         <activity android:name=".PreferenciasActivity" />
         <activity android:name=".EditarPerfilActivity" />
         <activity android:name=".loginFragment" />
-        <activity android:name=".RecyclerChat"></activity>
+        <activity android:name=".RecyclerChat" />
+        <activity android:name=".Chat"></activity>
     </application>
 
 </manifest>

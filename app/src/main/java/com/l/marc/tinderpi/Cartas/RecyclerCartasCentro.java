@@ -86,8 +86,8 @@ public class RecyclerCartasCentro extends RecyclerView.Adapter<RecyclerCartasCen
                 x_cord = (int) event.getRawX();
                 y_cord = (int) event.getRawY();
 
-                containerView.setX(0);
-                containerView.setY(0);
+                //containerView.setX(0);
+                //containerView.setY(0);
 
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_DOWN:
