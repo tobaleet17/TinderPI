@@ -6,11 +6,13 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
+import com.daprlabs.aaron.swipedeck.SwipeDeck;
 import com.l.marc.tinderpi.R;
 
 import java.util.ArrayList;
@@ -25,6 +27,8 @@ public class CartasFragmentTab extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    private SwipeDeck cardStack;
+    private ArrayList<String> testData;
     private RelativeLayout parent;
     private Context context;
     private RecyclerView rc1;
@@ -71,17 +75,31 @@ public class CartasFragmentTab extends Fragment {
         View v = inflater.inflate(R.layout.cartas_tab, container, false);
        // parent = (RelativeLayout) v.findViewById(R.id.relative_container);
 
-        rc1 = (RecyclerView) v.findViewById(R.id.recyclerCartasCentro);
-        rlm = new LinearLayoutManager(v.getContext());
-        rc1.setLayoutManager(rlm);
+        cardStack = (SwipeDeck) v.findViewById(R.id.swipe);
+        testData = new ArrayList<>();
+        testData.add("0");
+        testData.add("1");
+        testData.add("2");
+        testData.add("3");
+        testData.add("4");
+        adapter = new RecyclerCartasCentro(testData, this);
 
-        CartasData c1 = new CartasData("pepe","catarroja");
-        CartasData c2 = new CartasData("aitor","picassent");
-        ArrayList<CartasData> arrrayAux = new ArrayList<>();
-        arrrayAux.add(c1);
-        arrrayAux.add(c2);
-        adapter = new RecyclerCartasCentro(arrrayAux);
-        rc1.setAdapter(adapter);
+        if(cardStack != null){
+            cardStack.setAdapter(adapter);
+        }
+        cardStack.setCallback(new SwipeDeck.SwipeDeckCallback() {
+            @Override
+            public void cardSwipedLeft(long stableId) {
+                Log.i("MainActivity", "card was swiped left, position in adapter: " + stableId);
+            }
+
+            @Override
+            public void cardSwipedRight(long stableId) {
+                Log.i("MainActivity", "card was swiped right, position in adapter: " + stableId);
+
+            }
+
+        });
 
         return v;
     }
