@@ -19,10 +19,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnPausedListener;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
 import java.util.concurrent.Executor;
@@ -40,26 +48,35 @@ public class registro3Fragment extends Fragment implements View.OnClickListener 
     private Personas personas;
     TextView resultado;
     Button siguiente;
+    String ur;
+    UploadTask uploadTask;
+    private DatabaseReference bbdd;
+    private Imagenes imag;
+
+
+    FirebaseStorage storage = FirebaseStorage.getInstance();
+    StorageReference storageRef = storage.getReferenceFromUrl("gs://flinder-7bcd9.appspot.com");
 
     private Context mainContext;
 
-//subida
+    //subida
     private FirebaseAuth mAuth;
 
 
     public registro3Fragment() {
     }
 
-    public static registro3Fragment newInstance(Personas param1, Bitmap imagen) {
+    public static registro3Fragment newInstance(Personas param1, String ur) {
         registro3Fragment fragment = new registro3Fragment();
         Bundle args = new Bundle();
         args.putParcelable(ARG_PARAM1, param1);
+        args.putString(ARG_PARAM2,ur);
 
-        ByteArrayOutputStream streamArray = new ByteArrayOutputStream();
-        imagen.compress(Bitmap.CompressFormat.JPEG,100,streamArray);
-        byte[] bytesImagen = streamArray.toByteArray();
+        // ByteArrayOutputStream streamArray = new ByteArrayOutputStream();
+        //imagen.compress(Bitmap.CompressFormat.JPEG,100,streamArray);
+        // byte[] bytesImagen = streamArray.toByteArray();
 
-        args.putByteArray(ARG_PARAM2,bytesImagen);
+        //  args.putByteArray(ARG_PARAM2,bytesImagen);
 
         fragment.setArguments(args);
         return fragment;
@@ -70,6 +87,9 @@ public class registro3Fragment extends Fragment implements View.OnClickListener 
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             personas = getArguments().getParcelable(ARG_PARAM1);
+            ur = getArguments().getString(ARG_PARAM2);
+
+            imag = new Imagenes();
 
         }
     }
@@ -89,6 +109,7 @@ public class registro3Fragment extends Fragment implements View.OnClickListener 
         mainContext = v.getContext();
 
         mAuth = FirebaseAuth.getInstance();
+        bbdd = FirebaseDatabase.getInstance().getReference("Usuarios");
         return v;
     }
 
@@ -117,7 +138,23 @@ public class registro3Fragment extends Fragment implements View.OnClickListener 
         }
 
         if (v.getId()==R.id.aceptar){
-            if (comprobar()==true){
+            if (comprobar()){
+                if(ur != null) {
+
+
+                    StorageReference childRef = storageRef.child("prueba2/image.jpg");
+                    //uploading the image
+                    uploadTask = childRef.putFile(Uri.parse(ur));
+                    imag.setImagen1(ur);
+
+                    uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+                            Toast.makeText(getContext(), "Subida exitosamente", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
                 conexion();
                 login=new loginFragment();
                 ((NavigationHost) getActivity()).navigateTo(login,false);
@@ -163,7 +200,9 @@ public class registro3Fragment extends Fragment implements View.OnClickListener 
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "createUserWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
-                            updateUI(user);
+                            String uid = user.getUid();
+                            agregarDatos(personas,uid);
+                            agregarFotos(imag,uid);
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "createUserWithEmail:failure", task.getException());
@@ -173,5 +212,19 @@ public class registro3Fragment extends Fragment implements View.OnClickListener 
                         // ...
                     }
                 });
+    }
+
+    private void agregarDatos(Personas p, String uid){
+
+        bbdd.child(uid).setValue(p);
+
+
+    }
+
+    private void agregarFotos(Imagenes i,String uid){
+
+        bbdd.child(uid).child("imagenes").setValue(i);
+
+
     }
 }

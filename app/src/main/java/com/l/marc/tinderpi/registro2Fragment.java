@@ -2,6 +2,7 @@ package com.l.marc.tinderpi;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -24,6 +25,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.storage.UploadTask;
+
 import java.util.Calendar;
 
 import static android.app.Activity.RESULT_OK;
@@ -33,14 +36,16 @@ public class registro2Fragment extends Fragment implements View.OnClickListener 
 
     private static final String ARG_PARAM1 = "param1";
     static final int fotos = 1;
+    int PICK_IMAGE_REQUEST = 111;
     private registro3Fragment registro3;
     private Personas personas;
     Spinner provincias;
     private int mYear, mMonth, mDay;
     EditText resultado;
     EditText genero;
-
-    Bitmap imagenAuxiliar;
+    Uri ur;
+    UploadTask uploadTask;
+    String ur2;
 
     Button tomar_foto;
     ImageView imageView;
@@ -152,7 +157,12 @@ public class registro2Fragment extends Fragment implements View.OnClickListener 
 
         if (v.getId()==R.id.foto){
 
-            final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+            Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+            intent.setType("image/*");
+            //intent.setAction(Intent.ACTION_PICK);
+            startActivityForResult(Intent.createChooser(intent, "Seleccionar Imagen"), PICK_IMAGE_REQUEST);
+
+           /* final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 
             LayoutInflater inflater = getActivity().getLayoutInflater();
 
@@ -183,9 +193,9 @@ public class registro2Fragment extends Fragment implements View.OnClickListener 
                     llamarIntentFoto();
                     cambiarmensajeBoton();
                 }
-            });
+            });*/
 
-            builder.show();
+            // builder.show();
 
         }
 
@@ -207,7 +217,7 @@ public class registro2Fragment extends Fragment implements View.OnClickListener 
                 String txtGenero = genero.getText().toString().trim();
                 personas.setGenero(txtGenero);
 
-                registro3 = registro3Fragment.newInstance(personas, imagenAuxiliar);
+                registro3 = registro3Fragment.newInstance(personas, ur2);
                 ((NavigationHost) getActivity()).navigateTo(registro3, true);
             }
             else
@@ -230,20 +240,35 @@ public class registro2Fragment extends Fragment implements View.OnClickListener 
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-
-        if (requestCode == fotos &&resultCode==RESULT_OK) {
+        super.onActivityResult(requestCode, resultCode, data);
+       /* if (requestCode == fotos &&resultCode==RESULT_OK) {
             Bundle extras = data.getExtras();
             imagenAuxiliar = (Bitmap) extras.get("data");
             imageView.setImageBitmap(imagenAuxiliar);
 
-        }
+        }*/
 
         if (resultCode==RESULT_OK){
             Uri path=data.getData();
             imageView.setImageURI(path);
         }
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
+            ur = data.getData();
+            ur2 = data.getDataString();
+
+            try {
+                Bitmap bitmap = android.provider.MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), ur);
+                Bundle extras = data.getExtras();
+                //imagenAuxiliar = (Bitmap) extras.get("data");
+                //ur2 = (String) extras.get("data");
+                imageView.setImageBitmap(bitmap);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
 
     }
+
 
     public boolean comprobar(){
         boolean comproba;
