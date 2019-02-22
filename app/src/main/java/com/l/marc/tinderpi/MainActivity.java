@@ -1,6 +1,7 @@
 package com.l.marc.tinderpi;
 
 //import android.support.design.widget.TabLayout;
+import android.net.Uri;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -13,7 +14,7 @@ import android.widget.RelativeLayout;
 
 import com.l.marc.tinderpi.Cartas.CartasFragmentTab;
 
-public class MainActivity extends AppCompatActivity implements NavigationHost,TabHost.inicializarTabHost,PerfilFragmentTab.FragmentInteractionPerfil,CartasFragmentTab.FragmentInteractionListenerCartas,ChatFragmentTab.FragmentListenerChat{
+public class MainActivity extends AppCompatActivity implements NavigationHost,TabHost.inicializarTabHost,PerfilFragmentTab.FragmentInteractionPerfil,CartasFragmentTab.FragmentInteractionListenerCartas,ChatFragmentTab.FragmentListenerChat, fragmentCardView.OnFragmentInteractionListener{
     public RelativeLayout parentView;
 
     @Override
@@ -26,7 +27,7 @@ public class MainActivity extends AppCompatActivity implements NavigationHost,Ta
         if (savedInstanceState == null) {
             getSupportFragmentManager()
                     .beginTransaction()
-                    .add(R.id.container, fragmentPrueba)
+                    .add(R.id.container, new loginFragment())
                     .commit();
         }
 
@@ -103,6 +104,11 @@ public class MainActivity extends AppCompatActivity implements NavigationHost,Ta
 
     @Override
     public void onFragmentCharTab() {
+
+    }
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
 
     }
 }

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.media.Image;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +16,7 @@ import java.util.ArrayList;
 
 public class RecyclerChat extends RecyclerView.Adapter<RecyclerChat.ChatPickerViewHolder> {
 
-    private ArrayList<String> arrayChats;
+    private ArrayList<ChatPickerModel> arrayChats;
 
     public static class ChatPickerViewHolder extends android.support.v7.widget.RecyclerView.ViewHolder implements AdapterView.OnClickListener {
 
@@ -43,22 +44,24 @@ public class RecyclerChat extends RecyclerView.Adapter<RecyclerChat.ChatPickerVi
         }
     }
 
-    public RecyclerChat(ArrayList<String> array)
+    public RecyclerChat(ArrayList<ChatPickerModel> array)
     {
         this.arrayChats = array;
+        Log.d("MIO",arrayChats.size()+"");
     }
 
     @NonNull
     @Override
     public ChatPickerViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View v=LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.recycler_chat,viewGroup, false);
+        Log.d("MIO","Hola inflo un layout");
 
         return new ChatPickerViewHolder(v);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ChatPickerViewHolder chatPickerViewHolder, int i) {
-
+        chatPickerViewHolder.nombre.setText(arrayChats.get(i).getNombreUser());
     }
 
     @Override

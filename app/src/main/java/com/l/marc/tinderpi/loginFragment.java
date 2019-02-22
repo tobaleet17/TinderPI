@@ -38,7 +38,7 @@ public class loginFragment extends Fragment implements View.OnClickListener {
     private EditText pass;
 
 
-    private fragmentCardView cardView_fragment;
+    private TabHost tabHostFragment;
     public loginFragment() {
 
     }
@@ -59,7 +59,6 @@ public class loginFragment extends Fragment implements View.OnClickListener {
         pass=v.findViewById(R.id.passentrar);
 
         entrar.setOnClickListener(this);
-
 
         return v;
     }
@@ -83,8 +82,8 @@ public class loginFragment extends Fragment implements View.OnClickListener {
                             Log.d(TAG, "signInWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
 
-                            cardView_fragment=new fragmentCardView();
-                            ((NavigationHost) getActivity()).navigateTo(cardView_fragment,false);
+                            tabHostFragment = new TabHost();
+                            ((NavigationHost) getActivity()).navigateTo(tabHostFragment,false);
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithEmail:failure", task.getException());

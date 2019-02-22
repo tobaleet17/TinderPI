@@ -3,19 +3,25 @@ package com.l.marc.tinderpi;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * to handle interaction events.
- * Use the {@link ChatFragmentTab#newInstance} factory method to
- * create an instance of this fragment.
- */
+import java.util.ArrayList;
+
 public class ChatFragmentTab extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -25,6 +31,18 @@ public class ChatFragmentTab extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    private RecyclerView rc;
+    private RecyclerChat adaptadorRecycler;
+    private RecyclerView.LayoutManager rvLM;
+    private ArrayList<ChatPickerModel> arrayChatPicker;
+
+    private View viewAux;
+
+    private DatabaseReference bbdd;
+    private DatabaseReference bbddUser;
+    private FirebaseAuth mAuth;
+    private FirebaseUser usuario;
 
     private FragmentListenerChat mListener;
 
@@ -63,7 +81,47 @@ public class ChatFragmentTab extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.chat_fragment_tab, container, false);
+        View v = inflater.inflate(R.layout.chat_fragment_tab, container, false);
+        viewAux = inflater.inflate(R.layout.chat_fragment_tab, container, false);
+
+        arrayChatPicker = new ArrayList<>();
+
+        mAuth = FirebaseAuth.getInstance();
+        usuario = mAuth.getCurrentUser();
+        bbdd = FirebaseDatabase.getInstance().getReference("Usuarios").child("Usuario").child("matches");
+        bbddUser = FirebaseDatabase.getInstance().getReference("Usuarios");
+
+        bbdd.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot match: dataSnapshot.getChildren())
+                {
+                    ChatPickerModel cpm;
+                    if (match.getChildrenCount()>1)
+                    {
+                        Log.d("MIO","2 hijos");
+                        Log.d("MIO",match.child("idDelUser").getValue().toString());
+                        cpm = new ChatPickerModel(match.child("idDelUser").getValue().toString());
+                        arrayChatPicker.add(cpm);
+                        Log.d("MIO",""+arrayChatPicker.size());
+                    }
+                    else
+                    {
+                        Log.d("MIO","1 hijo");
+                        cpm = new ChatPickerModel(match.child("idDelUser").getValue().toString());
+                        arrayChatPicker.add(cpm);
+                    }
+                }
+                iniciarRecycler();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        return v;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -71,6 +129,16 @@ public class ChatFragmentTab extends Fragment {
         if (mListener != null) {
             mListener.onFragmentCharTab();
         }
+    }
+
+    public void iniciarRecycler()
+    {
+        rc = (RecyclerView) viewAux.findViewById(R.id.recycler_chat_picker);
+        rvLM = new LinearLayoutManager(viewAux.getContext());
+        rc.setLayoutManager(rvLM);
+
+        adaptadorRecycler = new RecyclerChat(arrayChatPicker);
+        rc.setAdapter(adaptadorRecycler);
     }
 
     @Override
@@ -90,16 +158,6 @@ public class ChatFragmentTab extends Fragment {
         mListener = null;
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
     public interface FragmentListenerChat {
         // TODO: Update argument type and name
         void onFragmentCharTab();
